@@ -1,0 +1,139 @@
+<div class="formmargin">
+  <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="box1">
+    <div class="box2" fxLayout="row" fxLayoutAlign="start start">
+      <div fxLayout="column" fxLayoutAlign="start start">
+        <div fxLayout="column" fxLayoutAlign="space-between end" class="tit1">
+          <span>Movement</span>
+          <div class="underline1"></div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" style="margin-top:1.2rem;">
+          <div class="circle_orange"></div>
+          <span class="pielegendtxt">Open</span>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" style="margin-top:0.7rem;">
+          <div class="circle_blue"></div>
+          <span class="pielegendtxt">Scheduled</span>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" style="margin-top:0.7rem;">
+          <div class="circle_black"></div>
+          <span class="pielegendtxt">In progress</span>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" style="margin-top:0.7rem;">
+          <div class="circle_green"></div>
+          <span class="pielegendtxt">Pending</span>
+        </div>
+
+      </div>
+
+      <div class="vdevider"></div>
+
+      <div class="chart-container" fxLayout="column" fxLayoutAlign="space-between start">
+        <canvas id="canvas"></canvas>
+        <span class="pieheading">Order Status</span>
+      </div>
+
+    </div>
+    <div class="box2" fxLayout="column" fxLayoutAlign="start start">
+      <div fxLayout="column" fxLayoutAlign="space-between end" class="tit1">
+        <span>Exception</span>
+        <div class="underline1"></div>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="start center" style="margin-top:0.5rem;">
+        <div class="scircle_orange"></div>
+        <span class="pielegendtxt1">Scheduled Delivery</span>
+        <div class="scircle_blue"></div>
+        <span class="pielegendtxt1">Actual Delivery</span>
+      </div>
+      <div style="display: block;margin-top:.5rem;margin-left: 1rem;">
+        <canvas baseChart width="320" height="120" [datasets]="lineChartData" [labels]="lineChartLabels"
+          [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
+          [plugins]="lineChartPlugins">
+        </canvas>
+      </div>
+    </div>
+    <div class="box2">
+      <div fxLayout="column" fxLayoutAlign="space-between end" class="tit1">
+        <span>Completed</span>
+        <div class="underline1"></div>
+      </div>
+    </div>
+  </div>
+  <div fxLayout="column" fxLayoutAlign="space-between end" class="tit2">
+    <span>Status</span>
+    <div class="underline2"></div>
+  </div>
+
+  <mat-table [dataSource]="dataSource" class="tableborder">
+
+    <ng-container matColumnDef="transid">
+      <mat-header-cell *matHeaderCellDef class="headercolor alignhead"> Trans Id</mat-header-cell>
+      <mat-cell *matCellDef="let element;index as i" class="alignbox">
+        <div fxLayout="row" fxLayoutAlign="space-evenly center">
+          <div class="divbox" [ngStyle]="{'background-color':i%2==0 ? '#d87e39' : '#6f52ed'}"></div>
+          <label class="boldtext">{{element.transid}}</label>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+
+    <ng-container matColumnDef="truck">
+      <mat-header-cell *matHeaderCellDef class="headercolor truckalign"> Truck</mat-header-cell>
+      <mat-cell *matCellDef="let element" class="boldtext truckalign"> {{element.truck}} </mat-cell>
+    </ng-container>
+
+
+    <ng-container matColumnDef="call">
+      <mat-header-cell *matHeaderCellDef class="headercolor aligncenter callalign"> Call</mat-header-cell>
+      <mat-cell *matCellDef="let element" class="aligncenter callalign">
+        <div fxLayout="row" fxLayoutAlign="start center" style="cursor: pointer;">
+          <img src="assets/images/phone (3).svg" width="28px">
+          <span class="call">Contact</span>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef class="headercolor aligncenter"> Status</mat-header-cell>
+      <mat-cell *matCellDef="let element" class="aligncenter">
+        <div fxLayout="column" fxLayoutAlign="center start" class="stepprogress">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="round"></div>
+            <div class="bar"></div>
+            <div class="bar2"></div>
+            <div class="round1"></div>
+            <div class="bar2"></div>
+            <div class="bar1"></div>
+            <div class="round2"></div>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="space-between center" style="width:100%;">
+            <span class="prgr" style="margin-left:2px;">PR</span>
+            <span class="po">PO</span>
+            <span class="prgr" style="margin-right:2px;">GR</span>
+          </div>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="alert">
+      <mat-header-cell *matHeaderCellDef class="headercolor aligncenter alertalign">Alert</mat-header-cell>
+      <mat-cell *matCellDef="let element" class="aligncenter alertalign">
+        <img src="assets/images/warning.svg" width="23px">
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="track">
+      <mat-header-cell *matHeaderCellDef class="headercolor aligncenter">Track</mat-header-cell>
+      <mat-cell *matCellDef="let element" class="aligncenter">
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="track hovereffect" (click)="handle_dashboard1()">
+          <div class="circle"><img src="assets/images/navigation (1).svg" width="8px"></div>
+          <span class="boldtext">Track Truck</span>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="displayedColumns" class="colheader"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>
